@@ -1,0 +1,117 @@
+# 默认训练配置文件，基于 Ultralytics YOLOv8 安全帽检测
+# 参考: https://docs.ultralytics.com/zh/modes/train/#augmentation-settings-and-hyperparameters
+# 可手动修改参数，或通过命令行覆盖（如 --epochs 10）
+
+# --- 基本参数 ---
+# 数据集配置文件，指向 configs/data.yaml
+data: data.yaml
+# 训练轮数，调试用 4，生产建议 100-300
+epochs: 4
+# 图像尺寸，典型值 640 或 1280
+imgsz: 640
+# 批次大小，-1 表示自动，16 适中
+batch: 16
+# 计算设备，0 表示 GPU，cpu 表示 CPU
+device: 0
+# 数据加载线程数，适中值，CPU 核心数影响
+workers: 8
+# 输出目录，保存训练结果
+project: C:\Users\Matri\Desktop\Safe\yoloserver\runs\detect
+# 运行名称，保存到 project/name
+name: train
+# 是否覆盖现有目录
+exist_ok: False
+# 是否使用预训练模型
+pretrained: True
+# 是否从检查点恢复训练
+resume: False
+# 随机种子，确保可复现
+seed: 0
+# 是否单类检测
+single_cls: False
+# 是否详细日志
+verbose: True
+# 是否保存模型检查点
+save: True
+# 保存间隔，-1 表示仅保存最佳和最后
+save_period: -1
+# 冻结层数，0 表示不冻结
+freeze: 0
+# 早停耐心值，50 次无改进停止
+patience: 50
+
+# --- 超参数 ---
+# 优化器，推荐 AdamW，选项: SGD, Adam
+optimizer: AdamW
+# 初始学习率，典型值 0.001-0.01
+lr0: 0.001
+# 最终学习率比例（cos_lr 时）
+lrf: 0.01
+# 动量，SGD 使用
+momentum: 0.937
+# 权重衰减，防止过拟合
+weight_decay: 0.0005
+# 预热轮数，平滑启动
+warmup_epochs: 3.0
+# 预热动量
+warmup_momentum: 0.8
+# 预热偏置学习率
+warmup_bias_lr: 0.1
+# 框损失权重
+box: 7.5
+# 分类损失权重
+cls: 0.5
+# 分布焦点损失权重
+dfl: 1.5
+# 姿态损失权重（姿态任务）
+pose: 12.0
+# 关键点目标权重
+kobj: 2.0
+# 标签平滑，0.0 表示禁用
+label_smoothing: 0.0
+# 标称批次大小，影响梯度累积
+nbs: 64
+# 分割任务是否重叠掩码
+overlap_mask: True
+# 分割掩码比率
+mask_ratio: 4
+# Dropout 率，0.0 表示禁用
+dropout: 0.0
+# 是否在训练中验证
+val: True
+# 使用余弦学习率调度
+cos_lr: False
+
+# --- 数据增强 ---
+# HSV 色调增强
+hsv_h: 0.015
+# HSV 饱和度增强
+hsv_s: 0.7
+# HSV 明度增强
+hsv_v: 0.4
+# 旋转角度范围（度）
+degrees: 0.0
+# 平移范围（图像比例）
+translate: 0.1
+# 缩放范围（图像比例）
+scale: 0.5
+# 剪切范围（度）
+shear: 0.0
+# 透视变换强度
+perspective: 0.0
+# 上下翻转概率
+flipud: 0.0
+# 左右翻转概率
+fliplr: 0.5
+# Mosaic 增强概率
+mosaic: 1.0
+# MixUp 增强概率
+mixup: 0.0
+# 复制粘贴增强概率
+copy_paste: 0.0
+# 自动增强策略，选项: randaugment, autoaugment
+auto_augment: randaugment
+# 随机擦除概率
+erasing: 0.4
+# 裁剪比例
+crop_fraction: 1.0

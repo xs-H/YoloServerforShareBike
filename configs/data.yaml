@@ -1,0 +1,5 @@
+train: C:\Users\Matri\Desktop\Safe\yoloserver\data\train\images
+val: C:\Users\Matri\Desktop\Safe\yoloserver\data\val\images
+test: C:\Users\Matri\Desktop\Safe\yoloserver\data\test\images
+nc: 5
+names: [safety_helmet, reflective_vest, person, head, ordinary_clothes]
