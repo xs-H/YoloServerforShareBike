@@ -75,7 +75,7 @@ def get_device_info(device):
     device_info.append(f"内存信息： {platform.machine()}")
     device_info.append(f"Python版本： {platform.python_version()}")
     device_info.append(f"架构类型：{platform.machine()}")
-    if device.upper() != "CPU" and torch.cuda.is_available():
+    if (isinstance(device, str) and device.upper() != "CPU") and torch.cuda.is_available():
         try:
             device_idx = int(device) if device.isdigit() else 0
             device_info.append(f"Pytorch版本： {torch.__version__}")
@@ -308,7 +308,8 @@ def merge_configs(args, yaml_config):
         logger.error("批次大小 (batch) 必须为正整数")
         raise ValueError("批次大小 (batch) 必须为正整数")
     if hasattr(yolo_args, 'device') and yolo_args.device is not None:
-        if yolo_args.device != 'cpu' and not yolo_args.device.isdigit():
+        if yolo_args.device != 'cpu' and not (isinstance(yolo_args.device, int) or (isinstance(yolo_args.device, str) and yolo_args.device.isdigit())
+    ):
             logger.error("计算设备 (device) 必须为 'cpu' 或 GPU 索引（如 '0'）")
             raise ValueError("计算设备 (device) 必须为 'cpu' 或 GPU 索引")
 
@@ -316,8 +317,14 @@ def merge_configs(args, yaml_config):
     # 标准化数据集路径（data），将相对路径转换为绝对路径
     # 例如：--data data.yaml -> C:\Users\Matri\Desktop\Safe\yoloserver\configs\data.yaml
     if hasattr(args, 'data') and args.data and not Path(args.data).is_absolute():
-        # 假设 data.yaml 位于 yoloserver/configs/ 目录
-        data_path = YOLO_SERVICE_DIR / "configs" / args.data
+        # 默认 只有名字的 data.yaml 位于 yoloserver/configs/ 目录， 如果是相对路径（有上级目录），默认从 YOLO_SERVICE_DIR 目录开始查找， 如果是绝对路径，则直接使用
+        if Path(args.data).is_absolute():
+            data_path = Path(args.data)
+        elif "/" in args.data or "\\" in args.data:
+            data_path = YOLO_SERVICE_DIR / args.data
+        else:
+            data_path = YOLO_SERVICE_DIR / "configs" / args.data
+        # data_path = YOLO_SERVICE_DIR / "configs" / args.data
         # 更新原始 args（确保后续逻辑一致）
         args.data = str(data_path)
         # 同步更新 project_args 和 yolo_args
