@@ -13,7 +13,7 @@ from datetime import datetime
 import platform
 from pathlib import Path
 from .paths import CONFIGS_DIR, CHECKPOINTS_DIR,RUNS_DIR, PRETRAINED_MODELS_DIR,YOLO_SERVICE_DIR  # 相对导入
-from .configs import DEFAULT_TRAIN_CONFIG, COMMENTED_CONFIG
+from .configs import DEFAULT_TRAIN_CONFIG, COMMENTED_TRAIN_CONFIG
 from .dataset import get_dataset_info
 from functools import wraps
 import time
@@ -79,7 +79,7 @@ def get_device_info(device):
         try:
             device_idx = int(device) if device.isdigit() else 0
             device_info.append(f"Pytorch版本： {torch.__version__}")
-            device_info.append(f"CUDA版本： {torch.version.cuda or '未知'} ")
+            device_info.append(f"CUDA版本： {torch.version.cuda or '未知'} ") # type: ignore
             device_info.append(f"显卡是否可用：{'可用' if torch.cuda.is_available() else '不可用'}")
             device_info.append(f"GPU设备型号： {torch.cuda.get_device_name(device_idx)}")
             device_info.append(f"GPU设备数量： {torch.cuda.device_count()}")
@@ -140,7 +140,7 @@ def generate_default_train_yaml(config_path):
     """
     logger = logging.getLogger("YOLO_Training")
     config = DEFAULT_TRAIN_CONFIG
-    commented_config = COMMENTED_CONFIG
+    commented_config = COMMENTED_TRAIN_CONFIG
 
     config_path.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -383,6 +383,38 @@ def log_execution_time(logger_name="YOLO_Training"):
             return result
         return wrapper
     return decorator
+
+def rename_log_file(logger, save_dir, model_name, log_encoding):
+    """
+    重命名日志文件
+
+    Args:
+        logger (logging.Logger): 日志记录器实例。
+        save_dir (Path): 日志保存目录。
+        model_name (str): 模型名称。
+        log_encoding (str): 日志文件编码。
+
+    Returns:
+    """
+    if not save_dir.exists():
+        logger.error(f"日志保存目录不存在: {save_dir}")
+        return
+
+    # 获取当前日志文件名
+    log_file = next((f for f in save_dir.glob("*.log") if f.is_file()), None)
+    if not log_file:
+        logger.warning("未找到日志文件，无法重命名")
+        return
+
+    # 构建新的日志文件名
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    new_log_name = f"{timestamp}_{model_name}.log"
+    new_log_path = save_dir / new_log_name
+
+    # 重命名日志文件
+    log_file.rename(new_log_path)
+    logger.info(f"日志文件已重命名为: {new_log_path} (编码: {log_encoding})")
+
 
 
 if __name__ == '__main__':
