@@ -16,7 +16,7 @@ device: 0
 # 数据加载线程数，适中值，CPU 核心数影响
 workers: 8
 # 输出目录，保存训练结果
-project: C:\Users\Matri\Desktop\Safe\yoloserver\runs\detect
+project: .\runs\detect
 # 运行名称，保存到 project/name
 name: train
 # 是否覆盖现有目录
