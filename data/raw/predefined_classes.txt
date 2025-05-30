@@ -1,0 +1,4 @@
+shared_bike_meituan
+shared_bike_qingcong
+shared_bike_haluo
+others
