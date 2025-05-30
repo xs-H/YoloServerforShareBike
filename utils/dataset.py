@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :dataset.py
-# @Time      :2025/5/24
-# @Author    :雨霓同学
-# @Function  :获取 YOLO 数据集的基本信息
 import yaml
 from pathlib import Path
 import os

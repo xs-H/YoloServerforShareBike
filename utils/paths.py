@@ -1,10 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :paths.py
-# @Time      :2025/5/21 21:29
-# @Author    :雨霓同学
-# @Function  :
-
 # -*- coding:utf-8 -*-
 # yoloserver/utils/paths.py
 # 定义项目路径常量，确保跨平台兼容和目录初始化

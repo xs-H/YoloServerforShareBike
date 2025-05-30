@@ -65,7 +65,7 @@ def main():
     # 路径标准化
     model_path = Path(args.weights)
     if not model_path.is_absolute():
-        model_path =  Path(r"C:\Users\Matri\Desktop\Safe\yoloserver\models\checkpoints")  / args.weights
+        model_path =  Path(r"..\models\checkpoints")  / args.weights
     source = args.source
 
     # 验证路径（跳过摄像头ID）

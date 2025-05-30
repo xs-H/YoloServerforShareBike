@@ -1,28 +1,37 @@
 from PIL import Image, ImageDraw, ImageFont
+import os
 import cv2
 import numpy as np
 
 # ======================= 全局配置 =======================
-FONT_PATH = "LXGWWenKai-Bold.ttf"  # 中文字体
+# FONT_PATH = "STFANGSO.TTF"  # 中文字体
+# Construct the font path dynamically
+FONT_PATH = os.path.join(os.path.dirname(__file__), 'font', 'LXGWWenKai-Bold.ttf')
+
+# Verify the path
+if not os.path.exists(FONT_PATH):
+    raise FileNotFoundError(f"Font file not found at {FONT_PATH}")
+
 FONT_SIZE = 44  # 默认字体大小
+
 LINE_WIDTH = 8  # 默认线宽
 LABEL_PADDING = (30, 18)  # 默认标签内边距（水平，垂直）
 RADIUS = 10  # 默认圆角半径
 TEXT_COLOR = (0, 0, 0)  # 默认文本颜色（RGB，黑色）
 
 LABEL_MAPPING = {
-    "safety_helmet": "安全帽",
-    "reflective_vest": "反光背心",
-    "person": "人员",
-    "head": "头部",
-    "ordinary_clothes": "普通服装"
+#shared_bike_meituan, shared_bike_qingcong, shared_bike_haluo, others
+    "shared_bike_meituan": "美团",
+    "shared_bike_qingcong": "青葱",
+    "shared_bike_haluo": "哈啰",
+    "others": "其他",
+
 }
 COLOR_MAPPING = {
-    "safety_helmet": (50, 205, 50),  # 鲜绿色
-    "reflective_vest": (255, 255, 0),  # 亮黄色
-    "person": (65, 105, 255),  # 橙色
-    "head": (0, 0, 255),  # 红色
-    "ordinary_clothes": (226, 43, 138)  # 紫色
+    "shared_bike_meituan": (50, 205, 50),  # 鲜绿色
+    "shared_bike_qingcong": (255, 255, 0),  # 亮黄色
+    "shared_bike_haluo": (65, 105, 255),  # 橙色
+    "others": (120, 120, 120),  # 灰色
 }
 text_size_cache = {}
 
@@ -88,6 +97,8 @@ def custom_plot(
         绘制后的图像（numpy数组，BGR）
     """
     result_image = image.copy()
+    img_shape = result_image.shape
+    font_size = round(img_shape[1] / (1080)) * font_size
     font = ImageFont.truetype(FONT_PATH, font_size)
     padding_x, padding_y = label_padding
 

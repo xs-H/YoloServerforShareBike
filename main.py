@@ -7,7 +7,7 @@ import cv2
 import numpy as np
 import logging
 from yoloside6 import Ui_MainWindow
-from yoloserver.utils.infer_stream import stream_inference
+from utils.infer_stream import stream_inference
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -143,7 +143,7 @@ class MainWindow(QMainWindow):
         self.ui.iou_slider.setMaximum(100)
         self.ui.iou_slider.setValue(45)
         self.ui.save_data.setChecked(True)
-        self.ui.detection_quantity.setText("未佩戴: 0")
+        self.ui.detection_quantity.setText("共有共享单车: 0辆")
         self.ui.detection_time.setText("0 ms")
         self.ui.detection_result.setText("无检测结果")
 
@@ -196,7 +196,9 @@ class MainWindow(QMainWindow):
 
     def select_model(self):
         try:
-            default_dir = Path(__file__).parent.parent / "yoloserver" / "weights"
+            # default_dir = Path(__file__).parent.parent / "yoloserver" / "weights"
+            default_dir = Path(__file__).parent / "weights"
+
             default_dir = default_dir.resolve()
             default_dir.mkdir(parents=True, exist_ok=True)
 
@@ -219,7 +221,9 @@ class MainWindow(QMainWindow):
 
     def select_video(self):
         try:
-            default_dir = Path(__file__).parent.parent / "yoloserver" / "inputs"
+            # default_dir = Path(__file__).parent.parent / "yoloserver" / "inputs"
+            default_dir = Path(__file__).parent / "inputs"
+
             default_dir = default_dir.resolve()
             default_dir.mkdir(parents=True, exist_ok=True)
 
@@ -248,7 +252,9 @@ class MainWindow(QMainWindow):
 
     def select_image(self):
         try:
-            default_dir = Path(__file__).parent.parent / "yoloserver" / "inputs"
+            # default_dir = Path(__file__).parent.parent / "yoloserver" / "inputs"
+            default_dir = Path(__file__).parent / "inputs"
+
             default_dir = default_dir.resolve()
             default_dir.mkdir(parents=True, exist_ok=True)
 
@@ -277,7 +283,9 @@ class MainWindow(QMainWindow):
 
     def select_dirs(self):
         try:
-            default_dir = Path(__file__).parent.parent / "yoloserver" / "inputs"
+            # default_dir = Path(__file__).parent.parent / "yoloserver" / "inputs"
+            default_dir = Path(__file__).parent / "inputs"
+
             default_dir = default_dir.resolve()
             default_dir.mkdir(parents=True, exist_ok=True)
 
@@ -419,7 +427,7 @@ class MainWindow(QMainWindow):
                 self.ui.upload_image.setText("上传预览")
                 self.ui.finall_result.setText("检测结果")
             self.ui.video_progressBar.setValue(0)
-            self.ui.detection_quantity.setText("未佩戴: 0")
+            self.ui.detection_quantity.setText("共有共享单车: 0辆")
             self.ui.detection_time.setText("0 ms")
             self.ui.detection_result.setText("无检测结果")
             self.status_label.setText("就绪")
@@ -473,23 +481,23 @@ class MainWindow(QMainWindow):
             pixmap = QPixmap.fromImage(q_img)
             self.ui.finall_result.setPixmap(pixmap.scaled(self.ui.finall_result.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
-            no_helmet_count = 0
+
             total_time = 0.0
             if result is not None and hasattr(result, 'boxes'):
-                no_helmet_count = sum(1 for box in result.boxes if int(box.cls) == 3)
-                person_count = sum(1 for box in result.boxes if int(box.cls) == 2)
-                safety_helmet_count = sum(1 for box in result.boxes if int(box.cls) == 0)
-                reflective_vest_count = sum(1 for box in result.boxes if int(box.cls) == 1)
-                area_count = sum(1 for box in result.boxes if int(box.cls) == 4)
+                others = sum(1 for box in result.boxes if int(box.cls) == 3)
+                shared_bike_haluo = sum(1 for box in result.boxes if int(box.cls) == 2)
+                shared_bike_meituan = sum(1 for box in result.boxes if int(box.cls) == 0)
+                shared_bike_qingcong = sum(1 for box in result.boxes if int(box.cls) == 1)
+                total = others + shared_bike_qingcong + shared_bike_meituan + shared_bike_haluo
                 total_time = sum(result.speed.values()) if hasattr(result, 'speed') else 0.0
-            self.ui.detection_quantity.setText(f"未佩戴: {no_helmet_count}")
+            self.ui.detection_quantity.setText(f"共有共享单车: {total}辆")
             self.ui.detection_time.setText(f"{total_time:.2f} ms")
-            self.ui.detection_result.setText(f"""共检测到人员数量有:  {person_count} \n
-其中未佩戴安全人员数量有: {no_helmet_count} 个\n
-其中佩戴安全帽人员数量有: {safety_helmet_count} 个\n
-其中穿着反光衣人员数量有: {reflective_vest_count} 个\n
-其中穿戴常服人员数量有: {area_count}\n
-当前帧检测耗时: {total_time:.2f} ms
+            self.ui.detection_result.setText(f"""共检测到自行车有:  {total} \n
+    其中哈啰共享单车的数量有: {shared_bike_haluo} 辆\n
+    其中美团共享单车的数量有: {shared_bike_meituan} 辆\n
+    其中青葱共享单车的数量有: {shared_bike_qingcong} 辆\n
+    其中不是共享单车的数量有: {others} 辆\n
+    当前帧检测耗时: {total_time:.2f} ms
 """)
 
             end_time = cv2.getTickCount()
@@ -507,7 +515,7 @@ class MainWindow(QMainWindow):
         self.status_label.setText(f"错误: {error_msg}")
         self.ui.upload_image.setText(error_msg)
         self.ui.finall_result.setText(error_msg)
-        self.ui.detection_quantity.setText("未佩戴: 0")
+        self.ui.detection_quantity.setText("共有共享单车: 0辆")
         self.ui.detection_time.setText("耗时: 0 ms")
         self.ui.detection_result.setText("无检测结果")
         self.terminate_video()

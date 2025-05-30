@@ -1,7 +1,7 @@
 task: detect
 mode: train
-model: C:\Users\Matri\Desktop\Safe\yoloserver\models\pretrained\yolov8m.pt
-data: C:\Users\Matri\Desktop\Safe\yoloserver\configs\data.yaml
+model: \pretrained\yolov8n.pt
+data: \configs\data.yaml
 epochs: 300
 time: null
 patience: 50
@@ -12,7 +12,7 @@ save_period: -1
 cache: false
 device: '0'
 workers: 8
-project: C:\Users\Matri\Desktop\Safe\yoloserver\runs\detect
+project: \runs\detect
 name: train5
 exist_ok: false
 pretrained: true
@@ -102,4 +102,4 @@ auto_augment: randaugment
 erasing: 0.4
 cfg: null
 tracker: botsort.yaml
-save_dir: C:\Users\Matri\Desktop\Safe\yoloserver\runs\detect\train5
+save_dir: \runs\detect\train

@@ -1,4 +1,4 @@
-# Safe/yoloserver/utils/infer_stream.py
+# yoloserver/utils/infer_stream.py
 from typing import Generator, Callable
 import logging
 from ultralytics import YOLO
@@ -17,7 +17,7 @@ def stream_inference(
     pause_callback: Callable[[], bool] = lambda: False
 ) -> Generator[tuple[np.ndarray, np.ndarray, object], None, None]:
     logger = logging.getLogger("YOLO_Training")
-    logger.info("===== YOLOv8 安全帽检测 UI 推理开始 =====")
+    logger.info("===== YOLOv8 共享单车检测 UI 推理开始 =====")
 
     model = None
     cap = None
@@ -58,6 +58,7 @@ def stream_inference(
 
         logger.info(f"加载模型: {model_path}")
         model = YOLO(str(model_path))
+        # model = YOLO(r"C:\Users\86156\PycharmProjects\pythonProject1\YoloServerforShareBike-main\YoloServerforShareBike-main\yolov8.yaml").load(model_path)
 
         project_args_ns = argparse.Namespace(**project_args)
         yolo_args_dict = yolo_args.copy()
@@ -149,7 +150,7 @@ def stream_inference(
             logger.info(f"推理完成，结果已保存至: {save_dir or '未保存'}")
 
         if save_dir and project_args.get('save', False):
-            from . import rename_log_file
+            from .utils import rename_log_file
             rename_log_file(logger, save_dir, Path(weights).stem, project_args.get('log_encoding', 'utf-8-sig'))
 
     except Exception as e:
@@ -162,4 +163,4 @@ def stream_inference(
             cap.release()
         if model:
             model = None
-        logger.info("===== YOLOv8 安全帽检测 UI 推理结束 =====")
+        logger.info("===== YOLOv8 共享单车检测 UI 推理结束 =====")

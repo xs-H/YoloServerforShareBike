@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :utils.py
-# @Time      :2025/5/22 09:31
-# @Author    :雨霓同学
-# @Function  :
 import os
 import shutil
 import argparse
@@ -315,7 +309,7 @@ def merge_configs(args, yaml_config):
 
     # --- 第五阶段：标准化路径参数 ---
     # 标准化数据集路径（data），将相对路径转换为绝对路径
-    # 例如：--data data.yaml -> C:\Users\Matri\Desktop\Safe\yoloserver\configs\data.yaml
+    # 例如：--data data.yaml -> configs\data.yaml
     if hasattr(args, 'data') and args.data and not Path(args.data).is_absolute():
         # 默认 只有名字的 data.yaml 位于 yoloserver/configs/ 目录， 如果是相对路径（有上级目录），默认从 YOLO_SERVICE_DIR 目录开始查找， 如果是绝对路径，则直接使用
         if Path(args.data).is_absolute():

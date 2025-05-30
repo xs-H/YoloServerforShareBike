@@ -13,7 +13,7 @@ class VideoProcessor:
             raise RuntimeError("摄像头初始化失败")
 
         # YOLO模型
-        self.model = YOLO(r'C:\Users\Matri\Desktop\Safe\yoloserver\models\checkpoints\train6-20250523-175204-yolo11m-best.pt')  # 替换为你的模型路径
+        self.model = YOLO(r'.\models\weights\best.pt')  # 替换为你的模型路径
 
         # 固定输出参数
         self.target_fps = 30

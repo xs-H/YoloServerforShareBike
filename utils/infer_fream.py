@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 from pathlib import Path
 import time
-from utils.beautify import custom_plot
+from .beautify import custom_plot
 
 def process_frame(frame, result, args, display_width, display_height, beautify_params):
     """处理单帧：动态调整美化参数、绘制、显示、保存"""

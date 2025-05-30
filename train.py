@@ -14,16 +14,16 @@ from utils.utils import rename_log_file
 def parse_args():
     parser = argparse.ArgumentParser(description="基于YOLO的共享单车检测训练")
     # YOLO 核心参数
-    parser.add_argument("--data", type=str, default="data/data.yaml", help="数据集路径")
-    parser.add_argument("--epochs", type=int, default=300, help="训练轮数")
+    parser.add_argument("--data", type=str, default="./data/data.yaml", help="数据集路径")
+    parser.add_argument("--epochs", type=int, default=30, help="训练轮数")
     parser.add_argument("--imgsz", type=int, default=640, help="图像尺寸")
-    parser.add_argument("--batch", type=int, default=None, help="批次大小")
+    parser.add_argument("--batch", type=int, default=64, help="批次大小")
     parser.add_argument("--device", type=str, default=None, help="计算设备")
-    parser.add_argument("--workers", type=int, default=None, help="数据加载线程数")
+    parser.add_argument("--workers", type=int, default=4, help="数据加载线程数")
     parser.add_argument("--project", type=str, default=None, help="输出目录")
     parser.add_argument("--name", type=str, default=None, help="运行名称")
     parser.add_argument("--exist_ok", action="store_true", help="是否覆盖现有目录")
-    parser.add_argument("--model", type=str, default="yolov8n.yaml", help="自定义模型配置文件")
+    parser.add_argument("--model", type=str, default="./configs/yolov8.yaml", help="自定义模型配置文件")
     parser.add_argument("--weights", type=str, default="yolov8n.pt", help="预训练模型")
     # 可选高频 YOLO 参数
     parser.add_argument("--lr0", type=float, default=None, help="初始学习率")
@@ -53,7 +53,8 @@ def train_model(model, yolo_args, logger):
 def main():
     args = parse_args()
     log_level = getattr(logging, args.log_level.upper(), logging.INFO)
-    model_name = args.model.replace('.yaml', '')  
+    model_name = args.model.replace('./configs/', '')  
+    model_name = model_name.replace('.yaml', '')  # 去掉文件扩展名
     logger = setup_logging(
          base_path=YOLO_SERVICE_DIR,
          log_type="train",

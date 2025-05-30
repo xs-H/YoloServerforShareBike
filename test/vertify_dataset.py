@@ -1,10 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :verify_dataset_log_v2.py
-# @Time      :2025/5/21 12:40
-# @Author    :雨霓同学
-# @Function  :验证YOLO数据集配置及相关文件
-
 from os.path import split
 import yaml
 from pathlib import Path

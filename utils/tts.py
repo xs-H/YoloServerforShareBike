@@ -1,9 +1,4 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :utilstts.py
-# @Time      :2025/5/27 14:24
-# @Author    :雨霓同学
-# @Function  :
+
 import pyttsx3
 import time
 import logging

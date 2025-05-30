@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# -*- coding:utf-8 -*-
-# @FileName  :test_tts_tea.py
-# @Time      :2025/5/27 14:06
-# @Author    :雨霓同学
-# @Function  :
 import pyttsx3  # pip install pyttsx3
 
 def init_tts():

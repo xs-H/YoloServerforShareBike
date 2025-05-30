@@ -20,7 +20,7 @@ def args_parser():
     """
     parser = argparse.ArgumentParser(description="基于 YOLO 的安全帽推理脚本")
     parser.add_argument("--weights", type=str, default="train6-20250523-175204-yolo11m-best.pt", help="模型权重路径")
-    parser.add_argument("--source", type=str, default=r"C:\Users\Matri\Desktop\Safe\yoloserver\data\test\images", help="输入源（图像/文件夹/视频/摄像头ID，如 '0'）")
+    parser.add_argument("--source", type=str, default=r"..\data\test\images", help="输入源（图像/文件夹/视频/摄像头ID，如 '0'）")
     parser.add_argument("--imgsz", type=int, default=640, help="输入图像尺寸")
     parser.add_argument("--conf", type=float, default=0.25, help="置信度阈值")
     parser.add_argument("--iou", type=float, default=0.45, help="IOU 阈值")
